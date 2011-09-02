@@ -146,7 +146,7 @@
          // first section tweens the current rendered heading of the player towards
          // the desired heading - but the next section actually applies a vector
          // TODO: this seems over complicated - must be an easier way to do this...
-         if (input.left)
+         if (input.moveLeft)
          {
             if (h > 270 || h < 90)
             {
@@ -155,7 +155,7 @@
             }
             else this.heading += ((270 - h) * 0.2);
          }
-         if (input.right)
+         if (input.moveRight)
          {
             if (h < 90 || h > 270)
             {
@@ -164,7 +164,7 @@
             }
             else this.heading -= ((h - 90) * 0.2);
          }
-         if (input.up)
+         if (input.moveUp)
          {
             if (h < 180)
             {
@@ -172,7 +172,7 @@
             }
             else this.heading += ((360 - h) * 0.2);
          }
-         if (input.down)
+         if (input.moveDown)
          {
             if (h < 180)
             {
@@ -184,28 +184,28 @@
          // second section applies the direct thrust angled vector
          // this ensures a snappy control method with the above heading effect
          var angle = null;
-         if (input.left)
+         if (input.moveLeft)
          {
-            if (input.up) angle = 315;
-            else if (input.down) angle = 225;
+            if (input.moveUp) angle = 315;
+            else if (input.moveDown) angle = 225;
             else angle = 270;
          }
-         else if (input.right)
+         else if (input.moveRight)
          {
-            if (input.up) angle = 45;
-            else if (input.down) angle = 135;
+            if (input.moveUp) angle = 45;
+            else if (input.moveDown) angle = 135;
             else angle = 90;
          }
-         else if (input.up)
+         else if (input.moveUp)
          {
-            if (input.left) angle = 315;
-            else if (input.right) angle = 45;
+            if (input.moveLeft) angle = 315;
+            else if (input.moveRight) angle = 45;
             else angle = 0;
          }
-         else if (input.down)
+         else if (input.moveDown)
          {
-            if (input.left) angle = 225;
-            else if (input.right) angle = 135;
+            if (input.moveLeft) angle = 225;
+            else if (input.moveRight) angle = 135;
             else angle = 180;
          }
          if (angle !== null)

@@ -609,47 +609,47 @@ if (typeof Arena == "undefined" || !Arena)
          {
             enemyMax: 5,
             enemyWeighting: [2],
-            lifetime: 10,
+            lifetime: 10
          },
          {
             enemyMax: 8,
             enemyWeighting: [0,1,1,2,2,3,3],
-            lifetime: 20,
+            lifetime: 20
          },
          {
             enemyMax: 8,
             enemyWeighting: [3],
-            lifetime: 10,
+            lifetime: 10
          },
          {
             enemyMax: 10,
             enemyWeighting: [1,2,5],
-            lifetime: 20,
+            lifetime: 20
          },
          {
             enemyMax: 10,
             enemyWeighting: [1,1,2,2,3,5],
-            lifetime: 20,
+            lifetime: 20
          },
          {
             enemyMax: 10,
             enemyWeighting: [2,4,6],
-            lifetime: 10,
+            lifetime: 10
          },
          {
             enemyMax: 10,
             enemyWeighting: [1,1,2,2,4,5],
-            lifetime: 20,
+            lifetime: 20
          },
          {
             enemyMax: 10,
             enemyWeighting: [3,4,6],
-            lifetime: 10,
+            lifetime: 10
          },
          {
             enemyMax: 10,
             enemyWeighting: [4,5,6],
-            lifetime: 20,
+            lifetime: 20
          },
          // infinite last wave!
          {
@@ -658,6 +658,16 @@ if (typeof Arena == "undefined" || !Arena)
             lifetime: 0
          }
       ];
+      
+      this.inputBinding = {};
+      this.inputBinding[KEY.A] = 'moveLeft';
+      this.inputBinding[KEY.D] = 'moveRight';
+      this.inputBinding[KEY.W] = 'moveUp';
+      this.inputBinding[KEY.S] = 'moveDown';
+      this.inputBinding[KEY.LEFT] = 'fireLeft';
+      this.inputBinding[KEY.RIGHT] = 'fireRight';
+      this.inputBinding[KEY.UP] = 'fireUp',
+      this.inputBinding[KEY.DOWN] = 'fireDown';
       
       var interval = new Game.Interval("ENTER THE ARENA!", this.intervalRenderer);
       Arena.GameScene.superclass.constructor.call(this, true, interval);
@@ -670,16 +680,33 @@ if (typeof Arena == "undefined" || !Arena)
       currentWave: 0,
       enemyKills: 0,
       timeInScene: 0,
+      input: {
+         moveLeft: false,
+         moveRight: false,
+         moveUp: false,
+         moveDown: false,
+         fireLeft: false,
+         fireRight: false,
+         fireUp: false,
+         fireDown: false
+      },
+ 
+      /**
+       * Initialize input flags
+       */
+      initInput: function() {
+         for (var i in this.input) {
+            this.input[i] = false;
+         };
+      },
       
       /**
-       * Key input values
+       * Binding of keys to input values
        */
-      input:
-      {
-         left: false,
-         right: false,
-         up: false,
-         down: false
+      inputBinding: null,
+      
+      getBinding: function(keyCode) {
+         return this.inputBinding[keyCode];
       },
       
       /**
@@ -768,10 +795,7 @@ if (typeof Arena == "undefined" || !Arena)
          }
          
          // reset keyboard input values
-         with (this.input)
-         {
-            left = right = up = down = false;
-         }
+         this.initInput();
       },
       
       /**
@@ -924,61 +948,43 @@ if (typeof Arena == "undefined" || !Arena)
        */
       onKeyDownHandler: function onKeyDownHandler(keyCode)
       {
-         switch (keyCode)
-         {
-            case KEY.LEFT:
-            case KEY.A:
+         var binding = this.getBinding(keyCode);
+         if (binding) {
+            this.input[binding] = true;
+            return true;
+         }
+         else {
+            switch (keyCode)
             {
-               this.input.left = true;
-               return true; break;
-            }
-            case KEY.RIGHT:
-            case KEY.D:
-            {
-               this.input.right = true;
-               return true; break;
-            }
-            case KEY.UP:
-            case KEY.W:
-            {
-               this.input.up = true;
-               return true; break;
-            }
-            case KEY.DOWN:
-            case KEY.S:
-            {
-               this.input.down = true;
-               return true; break;
-            }
-            
-            // special keys - key press state not maintained between frames
-            case KEY.L:
-            {
-               if (DEBUG) this.skipLevel = true;
-               return true; break;
-            }
-            case KEY.ESC:
-            {
-               GameHandler.pause();
-               return true; break;
-            }
-            
-            // TEMP - ARENA VIEW MANIPULATION AND TESTING
-            case KEY.OPENBRACKET:
-            {
-               if (this.world.viewsize > 500)
+               // special keys - key press state not maintained between frames
+               case KEY.L:
                {
-                  this.world.viewsize -= 100;
+                  if (DEBUG) this.skipLevel = true;
+                  return true; break;
                }
-               return true; break;
-            }
-            case KEY.CLOSEBRACKET:
-            {
-               if (this.world.viewsize < 1500)
+               case KEY.ESC:
                {
-                  this.world.viewsize += 100;
+                  GameHandler.pause();
+                  return true; break;
                }
-               return true; break;
+
+               // TEMP - ARENA VIEW MANIPULATION AND TESTING
+               case KEY.OPENBRACKET:
+               {
+                  if (this.world.viewsize > 500)
+                  {
+                     this.world.viewsize -= 100;
+                  }
+                  return true; break;
+               }
+               case KEY.CLOSEBRACKET:
+               {
+                  if (this.world.viewsize < 1500)
+                  {
+                     this.world.viewsize += 100;
+                  }
+                  return true; break;
+               }
             }
          }
       },
@@ -988,32 +994,10 @@ if (typeof Arena == "undefined" || !Arena)
        */
       onKeyUpHandler: function onKeyUpHandler(keyCode)
       {
-         switch (keyCode)
-         {
-            case KEY.LEFT:
-            case KEY.A:
-            {
-               this.input.left = false;
-               return true; break;
-            }
-            case KEY.RIGHT:
-            case KEY.D:
-            {
-               this.input.right = false;
-               return true; break;
-            }
-            case KEY.UP:
-            case KEY.W:
-            {
-               this.input.up = false;
-               return true; break;
-            }
-            case KEY.DOWN:
-            case KEY.S:
-            {
-               this.input.down = false;
-               return true; break;
-            }
+         var binding = this.getBinding(keyCode);
+         if (binding) {
+            this.input[binding] = false;
+            return true;
          }
       },
       

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>Arena5 - HTML5 Canvas JavaScript Game Demo!</title>
+      <link rel="stylesheet" href="reset.css" />
+      <script src="../canvask3d/scripts/mathlib-min.js"></script>
+      <script src="../canvask3d/scripts/k3d-min.js"></script>
+      <script src="scripts/gamelib.js"></script>
+      <script src="scripts/arena_main.js"></script>
+      <script src="scripts/arena_3d.js"></script>
+      <script src="scripts/arena_player.js"></script>
+      <script src="scripts/arena_weapons.js"></script>
+      <script src="scripts/arena_enemies.js"></script>
+      <script src="scripts/arena_effects.js"></script>
+      <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+      <style type="text/css">
+body
+{
+   font-family: Segoe UI Light, Arial, Helvetica;
+   background-color: #000;
+   background-image: url(images/arena5_bg2.jpg);
+   background-repeat: no-repeat;
+   margin: 0;
+}
+a, a:visited, a:active, a:hover { color: #fff }
+
+.wrapper
+{
+   margin-top: 16px;
+   text-align: center;
+   white-space: nowrap;
+}
+
+canvas
+{
+   background-color: #000;
+   cursor: crosshair;
+   -moz-box-shadow: 0px 0px 6px #000;
+   -webkit-box-shadow: 0px 0px 6px #000;
+   box-shadow: 0px 0px 6px #000;
+}
+
+.infopanel
+{
+   text-align: left;
+   display: inline-block;
+   max-width: 20em;
+   white-space: normal;
+   vertical-align: top;
+   margin-left: 1.5em;
+   background-color: #444488;
+   color: #fff;
+   line-height: 1.5em;
+   padding: 0.5em;
+   margin-top: 2em;
+   -moz-box-shadow: 0px 0px 6px #222266;
+   -webkit-box-shadow: 0px 0px 6px #222266;
+   box-shadow: 0px 0px 6px #222266;
+}
+
+.settings
+{
+   padding-left: 0.5em;
+}
+
+.button-overlay
+{
+   position: absolute;
+   right: 0;
+}
+
+.note
+{
+   color: yellow;
+}
+
+.small
+{
+   padding-left: 1em;
+   font-size: 0.75em;
+   line-height: 1.2em;
+}
+
+.section
+{
+   padding-top: 0.75em;
+}
+      </style>
+   </head>
+   
+   <body>
+      <div class="wrapper">
+         <div class="button-overlay"><a href="http://twitter.com/share?url=http://www.kevs3d.co.uk/dev/arena5/&text=Arena5%20-%20HTML5%20canvas%20game%20demo%20(by%20@kevinroast)%20%23html5%20%23javascript" class="twitter-share-button">Tweet</a></div>
+         <canvas id="canvas" width="600" height="600"></canvas>
+         <div class="infopanel">
+            <div><b>ARENA5 - HTML5 game by Kevin Roast</b></div>
+            <div class="settings">
+               <p class="section">WASD or Arrow keys - move your ship</p>
+               <p>Use the mouse to aim your fire!</p>
+               <p>Pickup the score multipliers dropped by the enemy ships - higher score means weapon power ups!</p>
+               <p class="section"><a href="../index.html">See more HTML5 demos!</a></p>
+               <p><a href="http://twitter.com/kevinroast" target="new">Follow me on Twitter: @kevinroast</a></p>
+               <p><a href="arena5-src.zip">Download the JavaScript source code</a></p>
+               <p><a href="./index-debug.html">Game DEBUG panel</a></p>
+               <p>Use: <a href="http://www.google.co.uk/chrome" target="new">Chrome</a> <a href="http://www.apple.com/safari/download" target="new">Safari</a> <a href="http://www.mozilla.com/firefox" target="new">FireFox</a> <a href="http://www.opera.com/download" target="new">Opera</a> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home" target="new">IE9</a></p>
+               <p class="note section">Last updated: 4/5/2011</p>
+               <p class="note small">Performance improvements for FF4 and IE9.</p>
+               <p class="note small">Fixed player explosion bug.</p>
+            </div>
+            <div class="section"><b>OTHER KEYS</b></div>
+            <div class="settings">
+               <p>[ ] - Zoom in/out world</p>
+               <p>ESC - Pause game</p>
+            </div>
+         </div>
+      </div>
+   </body>
+   <script>
+      var ua=navigator.userAgent.toLowerCase();
+      if (ua.indexOf(" mac ") != -1)
+      {
+         document.getElementById('canvas').style.cursor = "move";
+      }
+   </script>
+</html>

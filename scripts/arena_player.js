@@ -53,6 +53,11 @@
       heading: 0,
       
       /**
+       * Fire angle
+       */
+      fireAngle: null,
+      
+      /**
        * Player energy level
        */
       energy: 0,
@@ -217,6 +222,34 @@
             // reduce thrust over time if player isn't actively moving
             this.vector.scale(0.9);
          }
+         
+         // fire primary weapon, controlled by arrow keys
+         angle = null;
+         if (input.fireLeft)
+         {
+            if (input.fireUp) angle = 315;
+            else if (input.fireDown) angle = 225;
+            else angle = 270;
+         }
+         else if (input.fireRight)
+         {
+            if (input.fireUp) angle = 45;
+            else if (input.fireDown) angle = 135;
+            else angle = 90;
+         }
+         else if (input.fireUp)
+         {
+            if (input.fireLeft) angle = 315;
+            else if (input.fireRight) angle = 45;
+            else angle = 0;
+         }
+         else if (input.fireDown)
+         {
+            if (input.fireLeft) angle = 225;
+            else if (input.fireRight) angle = 135;
+            else angle = 180;
+         }
+         this.fireAngle = angle;
       },
       
       /**
@@ -273,15 +306,18 @@
        * @param bulletList {Array} to add bullet(s) to on success
        * @param heading {Number} bullet heading
        */
-      firePrimary: function firePrimary(bulletList, vector, heading)
+      firePrimary: function firePrimary(bulletList)
       {
          // attempt to fire the primary weapon(s)
          // first ensure player is alive
          if (this.alive)
          {
+            var v = new Vector(0.0, -24);
+            v.rotate(this.fireAngle * RAD);
+            
             for (var w in this.primaryWeapons)
             {
-               var b = this.primaryWeapons[w].fire(vector, heading);
+               var b = this.primaryWeapons[w].fire(v, this.fireAngle);
                if (b)
                {
                   for (var i=0; i<b.length; i++)

@@ -820,31 +820,12 @@ if (typeof Arena == "undefined" || !Arena)
                this.screenCenterVector(), new Vector(0, -5.0), "POWERUP X2!", 32, "white", 64));
          }
          
-         // player handle input - rotate and move
+         // handle input: make the player move and shoot
          p.handleInput(this.input);
          
-         // auto-fire in direction of mouse
-         //if (this.game.mouseleftbtn)
-         if (!(DEBUG && DEBUG.DISABLEAUTOFIRE))
+         if (p.fireAngle !== null)
          {
-            // TODO: move this down to weapons code - i.e. don't calculate fire vectors here...
-            var m = new Vector(this.game.mousex - GameHandler.offsetX, this.game.mousey - GameHandler.offsetY);
-            //if (DEBUG) console.log("Game click at: " + m.x + "," + m.y);
-            // transform mouse to world position
-            m.scale(1 / w.scale);
-            m.x += w.viewx;
-            m.y += w.viewy;
-            var v = m.nsub(p.position);
-            v.add(p.vector);
-            
-            // scale resulting vector down to fixed size
-            v.scaleTo(24);
-            
-            // calculate angle from upward pointing vector (the bullet start
-            // heading) and the vector we want the bullet to travel - this
-            // gives the heading we can use to rotate the bullet
-            var h = new Vector(0, 1).thetaTo2(v) / RAD;
-            p.firePrimary(this.playerBullets, v, h);
+            p.firePrimary(this.playerBullets);
          }
          
          // TODO: click to fire secondary weapons?
